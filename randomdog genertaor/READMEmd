@@ -1,0 +1,154 @@
+
+# 🐶 Random Dog Image Generator Using Python
+
+A fun and interactive Random Dog Image Generator built using Python and Streamlit.
+
+This application uses the Dog CEO API to fetch random dog pictures. Users can generate random dog images, select specific dog breeds, and download their favourite dog pictures.
+
+## 🚀 Features
+
+- Generate random dog images.
+- Browse different dog breeds.
+- Select specific dog breeds.
+- Select dog sub-breeds.
+- Display dog pictures in the application.
+- Download dog images.
+- Simple and interactive user interface.
+- Handle API errors and connection timeouts.
+- No API key required.
+
+## 🛠️ Technologies Used
+
+- Python
+- Streamlit
+- Requests
+- Dog CEO API
+
+## 🌐 API Used
+
+**Dog CEO API**
+
+API website:
+
+https://dog.ceo/dog-api/
+
+API documentation:
+
+https://dog.ceo/dog-api/documentation/
+
+No API key is required.
+
+## 📁 Project Structure
+
+```text
+random-dog-image-generator/
+│
+├── main.py
+├── requirements.txt
+├── README.md
+└── .gitignore
+```
+
+## 💻 Installation and Setup
+
+### Step 1: Clone the repository
+
+```bash
+git clone https://github.com/himanshu-verma/random-dog-image-generator.git
+```
+
+### Step 2: Open the project folder
+
+```bash
+cd random-dog-image-generator
+```
+
+### Step 3: Create a virtual environment
+
+```bash
+python -m venv venv
+```
+
+### Step 4: Activate the virtual environment
+
+For Windows:
+
+```bash
+venv\Scripts\activate
+```
+
+### Step 5: Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### Step 6: Run the application
+
+```bash
+streamlit run main.py
+```
+
+The application will open in your default web browser.
+
+## 📖 How to Use
+
+1. Open the Random Dog Image Generator.
+2. Select a dog breed or choose All Breeds.
+3. Click Generate Random Dog.
+4. Wait for the dog picture to load.
+5. View the generated dog image.
+6. Click Download Dog Image to save it.
+
+## 🐕 API Endpoints Used
+
+| Endpoint | Purpose |
+|---|---|
+| `/breeds/list/all` | Get all available dog breeds |
+| `/breeds/image/random` | Get a random dog image |
+| `/breed/{breed}/images/random` | Get a random image of a selected breed |
+| `/breed/{breed}/{sub-breed}/images/random` | Get an image of a selected sub-breed |
+
+## 🧠 Learning Outcomes
+
+By completing this project, you will learn:
+
+- How to work with REST APIs.
+- How to send HTTP GET requests.
+- How to process JSON responses.
+- How to retrieve images from API URLs.
+- How to use Python functions.
+- How to handle API errors and exceptions.
+- How to use Streamlit session state.
+- How to create an interactive Python web application.
+- How to download images through Streamlit.
+
+## 🔮 Future Improvements
+
+- Add a favourite dog collection.
+- Add a dog breed information section.
+- Display multiple dog images at once.
+- Add a dog image gallery.
+- Add a search feature for dog breeds.
+- Save favourite images permanently.
+- Add a refresh image button.
+
+## ⚠️ Important Note
+
+An active internet connection is required to fetch dog breeds and images.
+
+The images are provided by the Dog CEO API and are not stored permanently by this application.
+
+## 👨‍💻 Developer
+
+**Himanshu Verma**
+
+GitHub: https://github.com/himanshu-verma
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+⭐ If you like this project, consider giving it a star on GitHub!
