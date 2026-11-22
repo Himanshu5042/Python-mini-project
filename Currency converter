@@ -1,0 +1,172 @@
+
+import requests
+import streamlit as st
+from datetime import date
+
+# -----------------------------------------
+# CURRENCY CONVERTER
+# Developer: Himanshu Verma
+# API: Frankfurter
+# -----------------------------------------
+
+API_URL = "https://api.frankfurter.dev/v2"
+
+st.set_page_config(
+    page_title="Currency Converter",
+    page_icon="💱",
+    layout="centered"
+)
+
+
+@st.cache_data(ttl=3600)
+def get_currencies():
+    """Fetch available currencies from API."""
+
+    response = requests.get(
+        f"{API_URL}/currencies",
+        timeout=15
+    )
+    response.raise_for_status()
+
+    data = response.json()
+
+    return {
+        item["code"]: item["name"]
+        for item in data
+    }
+
+
+@st.cache_data(ttl=300)
+def convert_currency(amount, from_currency, to_currency):
+    """Convert currency using the latest available rate."""
+
+    if from_currency == to_currency:
+        return {
+            "rate": 1.0,
+            "result": amount,
+            "date": date.today().isoformat()
+        }
+
+    response = requests.get(
+        f"{API_URL}/rate/{from_currency}/{to_currency}",
+        timeout=15
+    )
+
+    response.raise_for_status()
+
+    data = response.json()
+
+    rate = data["rate"]
+
+    return {
+        "rate": rate,
+        "result": amount * rate,
+        "date": data["date"]
+    }
+
+
+# -----------------------------------------
+# APPLICATION UI
+# -----------------------------------------
+
+st.title("💱 Currency Converter")
+
+st.markdown(
+    "### Convert currencies using exchange rates"
+)
+
+st.info(
+    "Powered by Frankfurter API | No API key required"
+)
+
+try:
+    currencies = get_currencies()
+
+    st.subheader("Enter Conversion Details")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        amount = st.number_input(
+            "Enter Amount",
+            min_value=0.01,
+            value=100.00,
+            step=10.00
+        )
+
+        from_currency = st.selectbox(
+            "From Currency",
+            options=sorted(currencies.keys()),
+            index=sorted(currencies.keys()).index("INR")
+            if "INR" in currencies else 0,
+            format_func=lambda code: (
+                f"{code} - {currencies[code]}"
+            )
+        )
+
+    with col2:
+        to_currency = st.selectbox(
+            "To Currency",
+            options=sorted(currencies.keys()),
+            index=sorted(currencies.keys()).index("USD")
+            if "USD" in currencies else 0,
+            format_func=lambda code: (
+                f"{code} - {currencies[code]}"
+            )
+        )
+
+    if st.button("Convert Currency", type="primary"):
+
+        with st.spinner("Fetching exchange rate..."):
+
+            conversion = convert_currency(
+                amount,
+                from_currency,
+                to_currency
+            )
+
+        st.divider()
+
+        st.subheader("Conversion Result")
+
+        st.metric(
+            label=f"{from_currency} to {to_currency}",
+            value=f"{conversion['result']:,.4f} {to_currency}"
+        )
+
+        st.success(
+            f"{amount:,.2f} {from_currency} = "
+            f"{conversion['result']:,.4f} {to_currency}"
+        )
+
+        st.write(
+            f"**Exchange Rate:** 1 {from_currency} = "
+            f"{conversion['rate']:.6f} {to_currency}"
+        )
+
+        st.caption(
+            f"Rate date: {conversion['date']}"
+        )
+
+        st.caption(
+            "Rates are indicative reference rates, not guaranteed "
+            "bank or money-transfer transaction rates."
+        )
+
+except requests.exceptions.RequestException as error:
+
+    st.error(
+        f"Unable to connect to the exchange rate API: {error}"
+    )
+
+except (KeyError, ValueError, TypeError) as error:
+
+    st.error(
+        f"Unable to process exchange rate data: {error}"
+    )
+
+st.divider()
+
+st.markdown(
+    "Developed with ❤️ using Python | Streamlit | Frankfurter API"
+)
